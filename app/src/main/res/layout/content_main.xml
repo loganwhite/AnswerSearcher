@@ -44,7 +44,7 @@
         android:editable="false"
         android:ems="10"
         android:focusableInTouchMode="false"
-        android:gravity="start|end"
+        android:gravity="start"
         android:inputType="textMultiLine"
         android:selectAllOnFocus="false"
         android:textSize="18sp"
