@@ -7,7 +7,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +28,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
 
-    private EditText et_keyword, et_answer;
+    private EditText et_keyword;
+    private TextView tv_answer;
     private Button btn_search;
     private static String filename = "file.txt";
 
@@ -38,9 +41,22 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // bind the controls
-        et_answer = findViewById(R.id.et_answer);
+        tv_answer = findViewById(R.id.tv_answer);
+        tv_answer.setMovementMethod(new ScrollingMovementMethod());
+        tv_answer.setFocusable(false);
+        tv_answer.setClickable(false);
+        tv_answer.setLongClickable(false);
+        tv_answer.setSelected(false);
+
         et_keyword = findViewById(R.id.et_keywords);
         btn_search = findViewById(R.id.btn_search);
+        int btn_width = btn_search.getWidth();
+
+        ConstraintLayout.LayoutParams btnlp =
+                (ConstraintLayout.LayoutParams) btn_search.getLayoutParams();
+        btn_width += (btnlp.leftMargin + btnlp.rightMargin);
+
+        et_keyword.setWidth(this.getWindow().getWindowManager().getDefaultDisplay().getWidth() - btn_width);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 String keyword = et_keyword.getText().toString();
                 try {
                     String result = search(keyword, filename);
-                    et_answer.setText(result);
+                    tv_answer.setText(result);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG).show();
